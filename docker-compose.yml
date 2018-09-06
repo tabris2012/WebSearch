@@ -4,8 +4,9 @@ services:
     build: . # Dockerfileがあるディレクトリ
     container_name: node
     tty: true
+    privileged: true # root権限
     volumes:
       - ./app:/app
-      - /app/node_modules #バインドフォルダを強制指定 http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
+#      - /app/node_modules #バインドフォルダを強制指定 http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
     ports:
       - "3000:3000"
