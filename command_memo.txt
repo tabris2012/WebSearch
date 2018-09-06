@@ -1,5 +1,8 @@
 git init # git管理下に置く
 git remote add origin https://github.com/tabris2012.TestNode.git #GitHubに接続
+
+git clone https://github.com/tabris2012/WebSearch.git #Gitよりダウンロード
+
 git add "file path"
 git commit -m "comment" # -aオプションは既知のファイルの変更をすべてコミット
 git push origin "branch name"
