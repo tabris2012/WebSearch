@@ -1,0 +1,24 @@
+git init # git管理下に置く
+git remote add origin https://github.com/tabris2012.TestNode.git #GitHubに接続
+git add "file path"
+git commit -m "comment" # -aオプションは既知のファイルの変更をすべてコミット
+git push origin "branch name"
+
+git branch "branch name" #ローカルブランチを作成
+git checkout "branch name" #ブランチに移動
+
+git pull # 現在のブランチの内容をリモートからダウンロード
+git merge "from branch"
+
+# 入門
+# https://github.com/yosuke-furukawa/node_study
+npm init # package.jsonが生成される
+npm install "name" -g # -gでローカルフォルダではなくグローバルモジュール
+"name" --help # コマンドとして使える？
+
+# expressのコマンドラインは"express-generator"になった
+mkdir target
+cd target
+
+# npm installでパッケージにアクセスできなくなったら
+npm cashe clean --force
