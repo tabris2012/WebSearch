@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+html, body {
+background-color: #FAFAFA;
+height: 100%;
+overflow: hidden;
+margin: 0;
+}
+/* 左カラム */
+#left-contents {
+float:left;
+width:45%;
+height: 100%;
+overflow: scroll;
+}
+/* 右カラム */
+#right-contents {
+float:right;
+width:55%;
+height: 100%;
+overflow: scroll;
+}
