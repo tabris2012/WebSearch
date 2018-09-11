@@ -15,10 +15,10 @@ app.use(express.static(__dirname + '/views'));
 //app.use(fallback('index.html', {root: __dirname + '/views'})); // react-routerでリロードできるように
 
 // server side
-var indexRouter = require('./routes');
-var usersRouter = require('./routes/users');
-app.use('/api/', indexRouter);
-app.use('/api/users', usersRouter);
+var fileRouter = require('./routes/file');
+var folderRouter = require('./routes/folder');
+app.use('/api/file', fileRouter);
+app.use('/api/folder', folderRouter);
 
 // error handler
 app.use(function(err, req, res, next) {

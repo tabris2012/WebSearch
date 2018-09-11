@@ -15,7 +15,7 @@ function getFile(file_path) {
 	$.ajax ({
 		async: false, //ポップアップブロックされないために同期通信にする
 		type : "GET",
-		url : "./Servlet?method=get&key="+file_path,
+		url : "/api/file?path="+file_path,
 		dataType : "text"
 	})
 	// リクエスト成功
@@ -42,7 +42,7 @@ function getDataInFrame(target_id,file_path) {
 	
 	$.ajax ({
 		type : "GET",
-		url : "./Servlet?method=get&key="+file_path,
+		url : "/api/file?path="+file_path,
 		dataType : "text"
 	})
 	// リクエスト成功
@@ -87,7 +87,7 @@ function act(jsonObj, target_id) {
 function query(search_key, target_id) {
 	$.ajax ({
 		type : "GET",
-		url : "./Servlet?method=search&key="+escape(search_key)+"&path="+escape(path_list.join(",")),
+		url : "/api/folder/search?key="+escape(search_key)+"&path="+escape(path_list.join(",")),
 		dataType : "json"
 	})
 	//リクエスト成功
