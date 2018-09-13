@@ -9,5 +9,5 @@ Node.jsを使ったローカルディレクトリ検索
     # mount --bind [コンテナ内フォルダ] ./node_modules/
     # npm install
     # umount ./node_moduels/ # Invalid argumentエラーは無視できる
-    # cp -r [コンテナ内フォルダ]/* .node_modules/ #マウント解除後に中身をコピー
+    # cp -r [コンテナ内フォルダ]/* ./node_modules/ #マウント解除後に中身をコピー
     ```
