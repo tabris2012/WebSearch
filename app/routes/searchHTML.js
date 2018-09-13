@@ -22,15 +22,13 @@ var SearchHtml = {
 
     file_list.forEach((file) => {
       document = cheerio.load(iconv.decode(fs.readFileSync(dir+file),'shift-jis'));
-      console.log(document['title']);
       content_str = document.text()
-      console.log(content_str);
       
       if (~content_str.indexOf(key)) {
         array.push(
           {'filename': file,
-          'title': document['title'],
-          'path': (rpath+'/'+file)});
+          'title': document('title').text(),
+          'path': (rpath+file)});
       }
     });
 

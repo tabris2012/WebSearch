@@ -94,7 +94,6 @@ router.get('/search', function(req, res, next) {
   const path = req.query.path;
   var res_array = createResponseStr(key,path);
 
-  console.log(key);
   res.status(200).json(res_array);
 });
 
