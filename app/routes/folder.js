@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var SearchHtml = require('./SearchHTML');
 
 const data_path = './data/crawling/';
 const note_path = './data/note/';
@@ -77,14 +78,11 @@ function createResponseStr(key, rpath) {
   const array = [];
 
   path_list.forEach((path) => {
-    const res_array = [];
+    const res_array = SearchHtml.searchKeyInDir(key,path);
 
-    res_array.forEach((res) => {
-      const data = {};
-
+    res_array.forEach((res) => { //res_arrayの中身を移す
+      array.push(res);
     });
-
-    array.push(data);
   });
 
   return array;
@@ -92,7 +90,7 @@ function createResponseStr(key, rpath) {
 
 /* GET filepath with query. */
 router.get('/search', function(req, res, next) {
-  const key = req.query.key;
+  const key = unescape(req.query.key);
   const path = req.query.path;
   var res_array = createResponseStr(key,path);
 
