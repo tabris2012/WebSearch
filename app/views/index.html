@@ -118,7 +118,7 @@ function makeNoteDir() {
 function saveNote() {
 	var folderpath = document.getElementById("folder_path").value;
 	var filename = document.getElementById("note_title").value;
-	var filepath = folderpath + "\\" + filename;
+	var filepath = folderpath + filename;
 	console.log("saveNote: "+filepath);
 	
 	if (filename.length > 0) {

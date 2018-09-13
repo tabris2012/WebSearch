@@ -17,8 +17,10 @@ app.use(express.static(__dirname + '/views'));
 // server side
 var fileRouter = require('./routes/file');
 var folderRouter = require('./routes/folder');
+var noteRouter = require('./routes/note');
 app.use('/api/file', fileRouter);
 app.use('/api/folder', folderRouter);
+app.use('/api/note', noteRouter);
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -41,12 +41,10 @@ function mkdir(dir_path) {
 
 function searchFile(query, note_id) {
 	$.ajax ({
-		url: "./Servlet",
+		url: "./api/note/search",
 		dataType: "json",
 		type: "GET",
 		data : {
-			method: "note",
-			key: "search",
 			data: query
 		}
 	})
@@ -58,11 +56,9 @@ function searchFile(query, note_id) {
 function loadFile(file_path) {
 	$.ajax ({
 		type : "POST",
-		url : "./Servlet",
+		url : "./api/note/load",
 		data : {
-			method: "note",
 			path: file_path,
-			key: "load",
 		},
 		dataType : "text"
 	})
@@ -81,11 +77,9 @@ function saveFile(filepath, res_id) {
 	$.ajax ({
 		async: false,
 		type : "POST",
-		url : "./Servlet",
+		url : "./api/note/save",
 		data: {
-			method: "note",
 			path: filepath,
-			key: "save",
 			data: simplemde.value()
 		},
 		dataType : "text"

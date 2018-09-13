@@ -68,8 +68,6 @@ router.get('/', function(req, res, next) {
       res_array = createDirStr(note_path);
   }
 
-  console.log("folder: ");
-  console.log(res_array);
   res.status(200).json(res_array);
 });
 
