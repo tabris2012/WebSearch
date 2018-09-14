@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!-- To Do
+* iframeはipadで非対応？
+ -->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Search and Note</title>
+<link rel="stylesheet" href="index.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<script type="text/javascript" src="contact.js"></script>
+<link rel="stylesheet" href="themes/default/style.min.css" />
+<script src="jstree.min.js"></script>
+<script src="jstreeHelper.js"></script>
+<script>
+$(function () { //ページ表示時にディレクトリ構成取得
+	$('#directory').jstree({ //データディレクトリ構成
+		'core' : {
+			'animation' : 0,
+		},
+		"checkbox" : {
+			"three_state": false,
+			"cascade": "" //階層ごとに別々にフォルダ選択
+			},
+		'plugins' : ["wholerow", "checkbox"]
+	});
+	//イベント登録
+	$('#directory').on("changed.jstree", function (e, data) {
+	  path_list = data.selected //検索対象フォルダへの相対パス取得
+	});
+	//中身読み込み
+	loadTree("directory");
+	
+	$('#note-dir').jstree({ //ノートディレクトリ構成
+		'core' : {
+			'multiple' : false,
+			'animation' : 0,
+		},
+		"checkbox" : {
+			"three_state": false,
+			"cascade": "" //階層ごとに別々にフォルダ選択
+		},
+		"search" : {
+			"search_callback": function (query, node) { //id名で検索する
+				return (query.indexOf(node.id) >= 0);
+			}
+		},
+		'plugins' : ["wholerow", "checkbox", "search"]
+	});
+	//イベント登録
+	$('#note-dir').on("select_node.jstree", function (e, data) {
+		var select_path = data.selected[0];
+		select_folder = select_path.substring(0,select_path.lastIndexOf('\\'));
+		var filename = select_path.substring(select_path.lastIndexOf('\\')+1);
+		console.log(select_path);
+		document.getElementById("folder_path").value = select_folder;
+		document.getElementById("note_title").value = filename;
+		document.getElementById("rename_path").value = select_folder;
+		document.getElementById("rename_note").value = filename;
+		
+		if (filename.length > 0) //ファイル名がある時だけロード
+			loadFile(select_path);
+	});
+	//中身読み込み
+	loadTree("note-dir");
+});
+
+</script>
+<script type="text/javascript">
+function queryNote(query) {
+	searchFile(query, 'note-dir');
+	
+	var newNode = document.createElement("span");
+	var replace_id = "search-query"
+	newNode.id = replace_id; //同じidのノードを作る
+	newNode.style = "font-weight:bold;";
+	newNode.appendChild(document.createTextNode(query));
+	/*既に存在するdivと置換*/
+	var targetNode = document.getElementById(replace_id);
+	targetNode.parentNode.replaceChild(newNode, targetNode);
+}
+
+function searchNote() {
+	var query_node = document.getElementById("note_search");
+	queryNote(query_node.value);
+	query_node.value = "";
+}
+
+function renameNote() {
+	var from_dir = document.getElementById("folder_path").value;
+	var from_file = document.getElementById("note_title").value;
+	var to_dir = document.getElementById("rename_path").value;
+	var to_file = document.getElementById("rename_note").value;
+	var to_path = to_dir+to_file;
+	
+	if (from_file.length > 0 && to_file.length > 0) {
+		rename(from_dir+from_file, to_path);
+		loadTree("note-dir", to_path); //保存後にディレクトリ構造再読み込み
+		document.getElementById("rename_path").value = to_dir;
+		document.getElementById("note_title").value = to_file;
+	}
+}
+
+function renameNoteDir() {
+	var from_path = document.getElementById("folder_path").value;
+	var to_path = document.getElementById("rename_path").value;
+	rename(from_path, to_path);
+	loadTree("note-dir"); //保存後にディレクトリ構造再読み込み
+	document.getElementById("folder_path").value = to_path;
+}
+
+function makeNoteDir() {
+	var dir_path = document.getElementById("folder_path").value;
+	mkdir(dir_path);
+	loadTree("note-dir"); //保存後にディレクトリ構造再読み込み
+}
+
+function saveNote() {
+	var folderpath = document.getElementById("folder_path").value;
+	var filename = document.getElementById("note_title").value;
+	var filepath = folderpath + filename;
+	console.log("saveNote: "+filepath);
+	
+	if (filename.length > 0) {
+		saveFile(filepath, "save-result");
+		$('#note-dir').jstree("deselect_all");
+		loadTree("note-dir", filepath); //保存後にディレクトリ構造再読み込み
+	}
+}
+
+function clr() {
+	document.js.txtb.value="";
+}
+
+function tbox1() {
+	search_key = document.js.txtb.value;
+	
+	if (search_key.length > 0) {
+		/*新たにdivを生成*/
+		var newNode = document.createElement("span");
+		newNode.id = "query"; //同じidのノードを作る
+		newNode.appendChild(document.createTextNode(search_key));
+		/*既に存在するdivと置換*/
+		var targetNode = document.getElementById("query");
+		targetNode.parentNode.replaceChild(newNode, targetNode);
+		
+		query(search_key, "link");
+		queryNote(search_key);
+		clr();
+	}
+}
+</script>
+<!-- Simple MDE -->
+<link rel="stylesheet" href="simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="noteLib.js"></script>
+</head>
+<body>
+<div id="left-contents">
+	<div id="directory"></div>
+	<div id="search">
+		<form name="js" onsubmit="tbox1();return false;">
+			<input type="text" name="txtb" value=""><br>
+			<input type="button" value="検索" onclick="tbox1()">
+			<input type="button" value="クリア" onclick="clr()"><br>
+		</form>
+	</div>
+	<h1>Results</h1>
+	<h2>検索文字列: <span id="query"></span></h2>
+	<div id="link"></div>
+</div>
+<div id="right-contents">
+	<div id="note-dir"></div>
+	<form onsubmit="searchNote(); return false;">
+		<span>Search: </span>
+		<input type="text" id="note_search" value="">
+		<input type="button" value="Search" onclick="searchNote()">
+		<span id="search-query"></span>
+	</form>
+	<span>Path: </span>
+	<input type="text" id="folder_path" value="">
+	<input type="button" value="Make" onclick="makeNoteDir()">
+	<span> >> </span>
+	<input type="text" id="rename_path" value="">
+	<input type="button" value="Rename" onclick="renameNoteDir()"><br>
+	<span>File: </span>
+	<input type="text" id="note_title" value="">
+	<input type="button" value="Save" onclick="saveNote()">
+	<span id="save-result"></span>
+	<span> >> </span>
+	<input type="text" id="rename_note" value="">
+	<input type="button" value="Rename" onclick="renameNote()"><br>
+	<textarea id="editor" name="name" rows="20" cols="40"></textarea>
+	<script type="text/javascript">
+		simplemde = new SimpleMDE({
+			element : document.getElementById("editor"),
+			forceSync: true,
+			spellChecker: false
+		});
+	</script>
+	</div>
+</body>
+</html>
