@@ -69,10 +69,12 @@ function act(jsonObj, target_id) {
 		newDiv.id = "toggle"+i; //iframe用
 		
 		var newLink = document.createElement("a");
-		newLink.href = "javascript:void(0)";
 		//newLink.setAttribute("onclick", "getFile(\""+jsonObj[i].path.replace(/\\/g, "\\\\")+"\");");
-		newLink.setAttribute("onclick",
-				"getDataInFrame(\""+newDiv.id+"\", \""+jsonObj[i].path.replace(/\\/g, "\\\\")+"\");");
+		//newLink.setAttribute("onclick",
+		//		"getDataInFrame(\""+newDiv.id+"\", \""+jsonObj[i].path.replace(/\\/g, "\\\\")+"\");");
+		//newLink.href = "javascript:void(0)";
+		newLink.href = "http://"+location.hostname+":3001"+jsonObj[i].path.replace(/\.\//g, "/");
+		newLink.target ="_blank";
 		newLink.appendChild(document.createTextNode(
 				jsonObj[i].path + ": " + jsonObj[i].title));
 		
