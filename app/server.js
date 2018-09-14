@@ -2,8 +2,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const static = require('node-static');
 
 var app = express();
+var app2 = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -13,6 +15,8 @@ app.use(cookieParser());
 // view as static html
 app.use(express.static(__dirname + '/views'));
 //app.use(fallback('index.html', {root: __dirname + '/views'})); // react-routerでリロードできるように
+const data_dir = __dirname+'/data/crawling';
+const fileServer = new static.Server(data_dir); //charset=Shift-JISが有効なサーバ
 
 // server side
 var fileRouter = require('./routes/file');
@@ -34,7 +38,16 @@ app.use(function(err, req, res, next) {
 });
 
 var port = '3000';
+var port2 = '3001';
 
 app.listen(port, '0.0.0.0', () => {
-  console.log("server starting");
-})
+  console.log("App server starting");
+});
+
+require('http').createServer(function(req,res) {
+  req.addListener('end', function() {
+    fileServer.serve(req,res);
+  }).resume();
+}).listen(port2,'0.0.0.0', () => {
+  console.log("File server starting");
+});
