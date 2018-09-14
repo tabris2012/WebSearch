@@ -91,10 +91,10 @@ function renameNote() {
 	var from_file = document.getElementById("note_title").value;
 	var to_dir = document.getElementById("rename_path").value;
 	var to_file = document.getElementById("rename_note").value;
-	var to_path = to_dir+"\\"+to_file;
+	var to_path = to_dir+to_file;
 	
 	if (from_file.length > 0 && to_file.length > 0) {
-		rename(from_dir+"\\"+from_file, to_path);
+		rename(from_dir+from_file, to_path);
 		loadTree("note-dir", to_path); //保存後にディレクトリ構造再読み込み
 		document.getElementById("rename_path").value = to_dir;
 		document.getElementById("note_title").value = to_file;

@@ -6,6 +6,40 @@ const iconv = require('iconv-lite');
 
 const note_path = './data/note/';
 
+/* Rename file*/
+router.post('/rename', function(req,res,next) {
+  const from_path = note_path+req.body.path;
+  const to_path = note_path + req.body.data;
+
+  if (to_path == note_path) { //変換先ファイル名がないとき、削除
+    try {
+      fs.statSync(from_path); //ファイルが存在
+      fs.unlinkSync(from_path);
+    } catch (err) {
+      if (err.code === 'ENOENT') res.status(200).send('ENOENT');
+    }
+
+    res.status(200).send('deleted');
+    return;
+  }
+  
+  fs.renameSync(from_path, to_path);
+  res.status(200).send('rename');
+});
+
+/* Make Directory */
+router.post('/mkdir', function(req,res,next) {
+  const filepath = note_path + req.body.path;
+
+  try {
+    fs.statSync(filepath);// 親フォルダの存在確認
+  } catch (err) {
+    fs.mkdirSync(filepath); //同期作成->フォルダ作成後に書き込み
+  }
+
+  res.status(200).send('mkdir');
+});
+
 /* Save file */
 router.post('/save', function(req,res,next) {
   const filepath = note_path + req.body.path;
@@ -15,7 +49,7 @@ router.post('/save', function(req,res,next) {
   try {
     fs.statSync(file_dir);// 親フォルダの存在確認
   } catch (err) {
-    fs.mkdir(file_dir);
+    fs.mkdirSync(file_dir); //同期作成->フォルダ作成後に書き込み
   }
 
   if (data.length <= 0) { //書き込む中身がないとき、削除
@@ -25,6 +59,9 @@ router.post('/save', function(req,res,next) {
     } catch (err) {
       if (err.code === 'ENOENT') res.status(200).send('ENOENT');
     }
+
+    res.status(200).send('deleted');
+    return;
   }
 
   fs.writeFileSync(filepath,iconv.encode(data,'shift-jis'));

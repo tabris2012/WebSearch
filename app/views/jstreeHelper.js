@@ -5,7 +5,7 @@ function loadTree(method, select_node) {
 	$.ajax({
 		async : true,
 		type : "GET",
-		url : "/api/folder?method="+method,
+		url : "./api/folder?method="+method,
 		dataType : "json",
 		
 		success : function (jsonData) {

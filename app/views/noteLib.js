@@ -7,12 +7,10 @@ var select_folder;
 function rename(from_path, to_path) {
 	$.ajax ({
 		async: false,
-		type : "GET",
-		url : "./Servlet",
+		type : "POST",
+		url : "./api/note/rename",
 		data: {
-			method: "note",
 			path: from_path,
-			key: "rename",
 			data: to_path,
 		},
 		dataType : "text"
@@ -26,11 +24,9 @@ function mkdir(dir_path) {
 	$.ajax ({
 		async: false,
 		type : "POST",
-		url : "./Servlet",
+		url : "./api/note/mkdir",
 		data: {
-			method: "note",
 			path: dir_path,
-			key: "mkdir",
 		},
 		dataType : "text"
 	})
