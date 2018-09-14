@@ -135,19 +135,19 @@ function clr() {
 function tbox1() {
 	search_key = document.js.txtb.value;
 	
+	/*新たにdivを生成*/
+	var newNode = document.createElement("span");
+	newNode.id = "query"; //同じidのノードを作る
+	newNode.appendChild(document.createTextNode(search_key));
+	/*既に存在するdivと置換*/
+	var targetNode = document.getElementById("query");
+	targetNode.parentNode.replaceChild(newNode, targetNode);
+	
+	query(search_key, "link");
 	if (search_key.length > 0) {
-		/*新たにdivを生成*/
-		var newNode = document.createElement("span");
-		newNode.id = "query"; //同じidのノードを作る
-		newNode.appendChild(document.createTextNode(search_key));
-		/*既に存在するdivと置換*/
-		var targetNode = document.getElementById("query");
-		targetNode.parentNode.replaceChild(newNode, targetNode);
-		
-		query(search_key, "link");
 		queryNote(search_key);
-		clr();
 	}
+	clr();
 }
 </script>
 <!-- Simple MDE -->
