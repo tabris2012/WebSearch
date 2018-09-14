@@ -1,35 +1,41 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const iconv = require('iconv-lite');
 
 const note_path = './data/note/';
 
 /* Save file */
 router.post('/save', function(req,res,next) {
-  const path = req.body.path;
+  const filepath = note_path + req.body.path;
   const data = req.body.data;
+  const file_dir = path.dirname(filepath);
 
-  // TBD: 親フォルダの存在確認
+  try {
+    fs.statSync(file_dir);// 親フォルダの存在確認
+  } catch (err) {
+    fs.mkdir(file_dir);
+  }
 
-
-  if (data.length <= 0) {
+  if (data.length <= 0) { //書き込む中身がないとき、削除
     try {
-      fs.statSync(note_path+path); //ファイルが存在
-      fs.unlinkSync(note_path+path);
+      fs.statSync(filepath); //ファイルが存在
+      fs.unlinkSync(filepath);
     } catch (err) {
       if (err.code === 'ENOENT') res.status(200).send('ENOENT');
     }
   }
-  fs.writeFileSync(note_path+path,iconv.encode(data,'shift-jis'));
+
+  fs.writeFileSync(filepath,iconv.encode(data,'shift-jis'));
 
   res.status(200).send('saved');
 });
 
 /* Load file contents */
 router.post('/load', function(req,res,next) {
-  const path = req.body.path;
-  const content_str = iconv.decode(fs.readFileSync(note_path+path),'shift-jis');
+  const filepath = note_path + req.body.path;
+  const content_str = iconv.decode(fs.readFileSync(filepath),'shift-jis');
   res.status(200).send(content_str);
 });
 
