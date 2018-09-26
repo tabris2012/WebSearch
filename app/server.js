@@ -15,7 +15,7 @@ app.use(cookieParser());
 // view as static html
 app.use(express.static(__dirname + '/views'));
 //app.use(fallback('index.html', {root: __dirname + '/views'})); // react-routerでリロードできるように
-const data_dir = __dirname+'/data/crawling';
+const data_dir = '/data/crawling';
 const fileServer = new static.Server(data_dir); //charset=Shift-JISが有効なサーバ
 
 // server side

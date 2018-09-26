@@ -2,7 +2,7 @@ var fs = require('fs');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 
-const data_path = './data/crawling/';
+const data_path = '/data/crawling/';
 
 var SearchHtml = {
   searchKeyInDir: function(key, rpath) {

@@ -3,7 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 const iconv = require('iconv-lite');
 
-const root_path = './data/crawling/';
+const root_path = '/data/crawling/';
 /* GET file contents. */
 router.get('/', function(req, res, next) {
   const path = req.query.path;
