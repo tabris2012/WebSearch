@@ -73,7 +73,8 @@ function act(jsonObj, target_id) {
 		//newLink.setAttribute("onclick",
 		//		"getDataInFrame(\""+newDiv.id+"\", \""+jsonObj[i].path.replace(/\\/g, "\\\\")+"\");");
 		//newLink.href = "javascript:void(0)";
-		newLink.href = "http://"+location.hostname+":3001/"+jsonObj[i].path;
+		//newLink.href = "http://"+location.hostname+":3001/"+jsonObj[i].path;
+		newLink.href = "./fs/"+jsonObj[i].path;
 		newLink.target ="_blank";
 		newLink.appendChild(document.createTextNode(
 				jsonObj[i].path + ": " + jsonObj[i].title));
