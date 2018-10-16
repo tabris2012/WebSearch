@@ -2,7 +2,7 @@ var fs = require('fs');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 
-const data_path = './data/crawling/';
+const data_path = '/data/crawling/';
 
 var SearchHtml = {
   searchKeyInDir: function(key, rpath) {
@@ -24,7 +24,7 @@ var SearchHtml = {
       document = cheerio.load(iconv.decode(fs.readFileSync(dir+file),'shift-jis'));
       content_str = document.text()
       
-      if (~content_str.indexOf(key)) {
+      if (key.length <1 || ~content_str.indexOf(key)) { //検索語がないときはすべて表示
         array.push(
           {'filename': file,
           'title': document('title').text(),
