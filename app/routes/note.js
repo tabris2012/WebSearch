@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const iconv = require('iconv-lite');
 
-const note_path = './data/note/';
+const note_path = '/data/note/';
 
 /* Rename file*/
 router.post('/rename', function(req,res,next) {

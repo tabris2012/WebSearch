@@ -3,8 +3,8 @@ var router = express.Router();
 var fs = require('fs');
 var SearchHtml = require('./SearchHTML');
 
-const data_path = './data/crawling/';
-const note_path = './data/note/';
+const data_path = '/data/crawling/';
+const note_path = '/data/note/';
 
 function createDirStr(root_dir, only_dir) {
   if (only_dir == null) {
