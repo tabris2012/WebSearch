@@ -42,7 +42,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var port = '80';
+var port = '8020';
 
 app.listen(port, '0.0.0.0', () => {
   console.log("App server starting");
