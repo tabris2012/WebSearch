@@ -9,5 +9,5 @@ services:
       - ./app:/app
       - ../../../Data:/data #データディレクトリを接続
     ports:
-      - "3001:80"
+      - "8020:8020"
     command: /bin/sh -c "cd /app && npm install && npm start"
